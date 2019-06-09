@@ -333,80 +333,47 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.8800001
       objectReference: {fileID: 0}
+    - target: {fileID: -5592302122843175131, guid: b9f3c2d2fbf556945ad2018e2ead48d8,
+        type: 3}
+      propertyPath: m_TagString
+      value: Krutilka
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f3c2d2fbf556945ad2018e2ead48d8, type: 3}
---- !u!1 &1257729312
+--- !u!1 &1839035357 stripped
 GameObject:
+  m_CorrespondingSourceObject: {fileID: -5592302122843175131, guid: b9f3c2d2fbf556945ad2018e2ead48d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 883456298}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1839035361
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1257729315}
-  - component: {fileID: 1257729314}
-  - component: {fileID: 1257729313}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1257729313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1257729312}
+  m_GameObject: {fileID: 1839035357}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &1257729314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1257729312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &1257729315
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1257729312}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 7142778301374872811, guid: b9f3c2d2fbf556945ad2018e2ead48d8, type: 3}
 --- !u!1 &1882657006 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4650992326438477025, guid: b9f3c2d2fbf556945ad2018e2ead48d8,
     type: 3}
   m_PrefabInstance: {fileID: 883456298}
   m_PrefabAsset: {fileID: 0}
+--- !u!81 &1882657007
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882657006}
+  m_Enabled: 1
 --- !u!114 &1882657008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,9 +383,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1882657006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e8e8ddee1fd44448bd12644fd1baa3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 94c55893b7a1cc54cb1de68ee9218eb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MainCamera: {fileID: 0}
+  krutilka: {fileID: 0}
+  sensitivity: 0
 --- !u!114 &1882657009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,7 +401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d3fe6409dea2240ba9c0308b39d2dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voice: {fileID: 0}
+  voice: {fileID: 1882657010}
   uglomer: {fileID: 8300000, guid: 2105a4ec14609c14ba715a4f49c0efef, type: 3}
   collimator: {fileID: 8300000, guid: 189f84b5204e67e409ab11916611520f, type: 3}
   timeout: 0

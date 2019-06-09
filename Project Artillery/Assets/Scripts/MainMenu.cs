@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
-    public Button Play, SettingsB, Quit, Back, Resume, MainMenuButton, SettingG;
+    public Button Play, SettingsB, Quit, Back;
     public Slider Volume;
     public AudioSource MainSound;
     public int menupoint;
@@ -20,14 +20,12 @@ public class MainMenu : MonoBehaviour
         Quit.gameObject.SetActive(true);
         Back.gameObject.SetActive(false);
         Volume.gameObject.SetActive(false);
-        GameObject.FindGameObjectWithTag("GameMenu").SetActive(false);
         Play.onClick.AddListener(PlayButton);
         SettingsB.onClick.AddListener(SettingsButton);
         Quit.onClick.AddListener(QuitButton);
         Back.onClick.AddListener(BackButton);
         Volume.onValueChanged.AddListener(VolumeSlider);
-        Resume.onClick.AddListener(ResumeButton);
-        MainMenuButton.onClick.AddListener(MainMenuButtonF);
+        
 
 
 
@@ -44,7 +42,7 @@ public class MainMenu : MonoBehaviour
     {
         MainSound.Stop();
         GameObject.FindGameObjectWithTag("MainMenu").SetActive(false);
-        SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
+        SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
         menupoint = 1;
 
 
@@ -75,14 +73,6 @@ public class MainMenu : MonoBehaviour
         MainSound.volume = arg;
     }
 
-    void ResumeButton()
-    {
-        GameObject.FindGameObjectWithTag("GameMenu").SetActive(false);
-    }
-    void MainMenuButtonF()
-    {
-        GameObject.FindGameObjectWithTag("GameMenu").SetActive(false);
-        SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
-    }
+
 
 }

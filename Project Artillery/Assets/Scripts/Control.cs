@@ -36,7 +36,7 @@ public class Control : MonoBehaviour
           
         }
         if(ObjectName != "")
-        if (krutilka == hit.collider.gameObject & Input.GetMouseButton(0))
+        if (krutilka.name == ObjectName & Input.GetMouseButton(0) & Time.timeScale != 0)
         {
             krutilka.transform.Rotate(0, -sensitivity * Input.GetAxis("Mouse Y"), 0);
 

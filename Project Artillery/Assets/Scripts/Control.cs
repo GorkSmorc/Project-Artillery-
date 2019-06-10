@@ -24,22 +24,24 @@ public class Control : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             ray = MainCamera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit, 100))
             {
-                ObjectName = hit.collider.name; 
+                ObjectName = hit.collider.name;
+                if (ObjectName != "")
+                    if (krutilka.name == ObjectName & Input.GetMouseButton(0) & Time.timeScale != 0)
+                    {
+                        krutilka.transform.Rotate(-sensitivity * Input.GetAxis("Mouse Y"), 0, 0);
+
+                    }
             }
 
           
         }
-        if(ObjectName != "")
-        if (krutilka.name == ObjectName & Input.GetMouseButton(0) & Time.timeScale != 0)
-        {
-            krutilka.transform.Rotate(0, -sensitivity * Input.GetAxis("Mouse Y"), 0);
+       
 
-        }
     }
 }

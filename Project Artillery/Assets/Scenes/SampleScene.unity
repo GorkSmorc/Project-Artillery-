@@ -211,6 +211,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 56.136, y: -184.413, z: -253.004}
+--- !u!1 &684497221 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6154419579065954859, guid: b9f3c2d2fbf556945ad2018e2ead48d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 883456298}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &684497223
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684497221}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.16162872
+  m_Center: {x: 0, y: 0.013975143, z: -0.020246029}
 --- !u!1001 &883456298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -222,6 +241,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: "\u043F\u0440\u0438\u0446\u0435\u043B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6154419579065954859, guid: b9f3c2d2fbf556945ad2018e2ead48d8,
+        type: 3}
+      propertyPath: m_TagString
+      value: Krutilka
       objectReference: {fileID: 0}
     - target: {fileID: -4650992326438477025, guid: b9f3c2d2fbf556945ad2018e2ead48d8,
         type: 3}
@@ -336,7 +360,7 @@ PrefabInstance:
     - target: {fileID: -5592302122843175131, guid: b9f3c2d2fbf556945ad2018e2ead48d8,
         type: 3}
       propertyPath: m_TagString
-      value: Krutilka
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9f3c2d2fbf556945ad2018e2ead48d8, type: 3}

@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     public Button Play, SettingsB, Quit, Back;
     public Slider Volume;
     public AudioSource MainSound;
+   
     public int menupoint;
     // Start is called before the first frame update
     void Start()

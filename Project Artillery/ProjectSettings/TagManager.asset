@@ -6,6 +6,9 @@ TagManager:
   tags:
   - MainMenu
   - Krutilka
+  - Vizir
+  - SetCord
+  - ex
   layers:
   - Default
   - TransparentFX

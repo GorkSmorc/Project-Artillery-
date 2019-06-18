@@ -26,10 +26,11 @@ public class MainMenu : MonoBehaviour
         Quit.onClick.AddListener(QuitButton);
         Back.onClick.AddListener(BackButton);
         Volume.onValueChanged.AddListener(VolumeSlider);
-        
+        MainSound.Play();
+        MainSound.loop = true;
 
 
-
+        MainSound.volume = 0.2f;
         Volume.value = MainSound.volume;
 
     }
@@ -37,7 +38,7 @@ public class MainMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+     
     }
     void PlayButton()
     {

@@ -8,15 +8,18 @@ using UnityEngine.SceneManagement;
 public class CameraUI : MonoBehaviour
 {
     public AudioSource voice;
-    public AudioClip uglomer, collimator;
-    public Button Strt, Ok, Rand, Exit, ok2, cancel;
+    public AudioClip uglomer, collimator, navodchik;
+    public Button Strt, Ok, Rand, Exit, ok2, cancel, Accept, Back;
     public Text time, znach, znachV;
     public InputField des, sot;
-    public float timeout = 0, timer = 0, x, y;
+    public RawImage error, good;
+    public Sprite errorOff, errorAct, goodOff, goodAct;
+    private float timeout = 0, timer = 0;
     private string x1s = "00", x2s = "00";
     private bool play = false, ready = false;
-    public int butt, x1t, x2t;
-    public GameObject temp,ex;
+    private int x1t, x2t;
+    public int butt, x, y;
+    private GameObject temp,ex;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +33,8 @@ public class CameraUI : MonoBehaviour
         Exit.onClick.AddListener(ExitButton);
         ok2.onClick.AddListener(Ok2Button);
         cancel.onClick.AddListener(CancelButton);
+        Accept.onClick.AddListener(AcceptButton);
+        Back.onClick.AddListener(BackButton);
         time.text = timer.ToString("F2");
         temp = GameObject.FindGameObjectWithTag("SetCord") as GameObject;
         ex = GameObject.FindGameObjectWithTag("ex") as GameObject;
@@ -39,6 +44,10 @@ public class CameraUI : MonoBehaviour
         sot.text = "";
         znach.gameObject.SetActive(false);
         znachV.gameObject.SetActive(false);
+        Accept.gameObject.SetActive(false);
+        Back.gameObject.SetActive(false);
+        error.gameObject.SetActive(false);
+        good.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -86,11 +95,11 @@ public class CameraUI : MonoBehaviour
                 timeout = voice.clip.length;
                 play = false;
             }
-            if (timeout == 0 & play == false)
-                voice.Stop();
+           // if (timeout == 0 & play == false)
+                //voice.Stop();
 
-
-
+            Accept.gameObject.SetActive(true);
+            Back.gameObject.SetActive(true);
         }
 
         if (x1s != "")
@@ -104,6 +113,7 @@ public class CameraUI : MonoBehaviour
 
             }
 
+
     }
 
 
@@ -115,6 +125,8 @@ public class CameraUI : MonoBehaviour
         timeout = voice.clip.length + 2;
         play = true;
         Strt.gameObject.SetActive(false);
+        error.gameObject.SetActive(true);
+        good.gameObject.SetActive(true);
     }
 
     void OkButton()
@@ -137,6 +149,7 @@ public class CameraUI : MonoBehaviour
            
            
         }
+        
     }
     void RandButton()
     {
@@ -159,5 +172,25 @@ public class CameraUI : MonoBehaviour
     void CancelButton()
     {
         ex.SetActive(false);
+    }
+    void AcceptButton()
+    {
+        this.GetComponent<Control>().progress = 0;
+        this.GetComponent<Control>().CamPosition = this.GetComponent<Control>().MainCamera.transform.position;
+        if (butt == -1)
+            butt = -2;
+        else if (butt == -2)
+            butt = -3;
+            
+    }
+    void BackButton()
+    {
+        this.GetComponent<Control>().progress = 0;
+        this.GetComponent<Control>().CamPosition = this.GetComponent<Control>().MainCamera.transform.position;
+        if (butt == -2)
+            butt = -1;
+        else if (butt == -3)
+            butt = -2;
+        
     }
 }

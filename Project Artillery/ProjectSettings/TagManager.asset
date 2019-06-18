@@ -9,6 +9,10 @@ TagManager:
   - Vizir
   - SetCord
   - ex
+  - WayPoint
+  - WayPoint2
+  - Kostil
+  - WayPoint3
   layers:
   - Default
   - TransparentFX

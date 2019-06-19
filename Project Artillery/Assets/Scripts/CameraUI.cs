@@ -14,6 +14,7 @@ public class CameraUI : MonoBehaviour
     public InputField des, sot;
     public RawImage error, good;
     public Sprite errorOff, errorAct, goodOff, goodAct;
+    public Texture2D mainTex, background;
     private float timeout = 0, timer = 0;
     private string x1s = "00", x2s = "00";
     private bool play = false, ready = false;
@@ -46,8 +47,8 @@ public class CameraUI : MonoBehaviour
         znachV.gameObject.SetActive(false);
         Accept.gameObject.SetActive(false);
         Back.gameObject.SetActive(false);
-        error.gameObject.SetActive(false);
-        good.gameObject.SetActive(false);
+       // scope.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -112,7 +113,11 @@ public class CameraUI : MonoBehaviour
                 des.text = x1s;
 
             }
-
+        if (butt == -4)
+        {
+            error.gameObject.SetActive(false);
+            good.gameObject.SetActive(false);
+        }
 
     }
 
@@ -125,8 +130,7 @@ public class CameraUI : MonoBehaviour
         timeout = voice.clip.length + 2;
         play = true;
         Strt.gameObject.SetActive(false);
-        error.gameObject.SetActive(true);
-        good.gameObject.SetActive(true);
+
     }
 
     void OkButton()
@@ -146,8 +150,9 @@ public class CameraUI : MonoBehaviour
                 x1s = "0" + x1s;
             if (int.Parse(x2s) < 10)
                 x2s = "0" + x2s;
-           
-           
+            error.gameObject.SetActive(true);
+            good.gameObject.SetActive(true);
+
         }
         
     }
@@ -192,5 +197,17 @@ public class CameraUI : MonoBehaviour
         else if (butt == -3)
             butt = -2;
         
+    }
+    void OnGUI()
+    {
+        if (butt == -4)
+        {
+            GUI.depth = 999;
+            int hor = Screen.width;
+            int ver = Screen.height;
+            GUI.DrawTexture(new Rect((hor - ver) / 2, 0, ver, ver), mainTex);
+            GUI.DrawTexture(new Rect((hor / 2) + (ver / 2), 0, hor / 2, ver), background);
+            GUI.DrawTexture(new Rect(0, 0, (hor / 2) - (ver / 2), ver), background);
+        }
     }
 }

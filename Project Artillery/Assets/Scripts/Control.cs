@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Control : MonoBehaviour
 {
-    public Camera MainCamera, SecondCamera;
+    public Camera MainCamera, SecondCamera, ThirdCamera;
     private GameObject krutilka, vizir, WayPoint;
     string ObjectName;
     public Vector3 CamPosition, WayPointPos;
@@ -34,6 +34,7 @@ public class Control : MonoBehaviour
         stepVz = 6f;
         error = 0;
         timer = 0;
+        ThirdCamera.enabled = false;
     }
 
     // Update is called once per frame
@@ -157,6 +158,7 @@ public class Control : MonoBehaviour
                 good = true;
                 this.gameObject.GetComponent<CameraUI>().good.texture = this.gameObject.GetComponent<CameraUI>().goodAct.texture;
                 timer = 1f;
+                this.GetComponent<CameraUI>().butt = -4;
             }
             if (error == 3)
             {
@@ -166,11 +168,15 @@ public class Control : MonoBehaviour
                     this.gameObject.GetComponent<CameraUI>().voice.Stop();
                     this.gameObject.GetComponent<CameraUI>().voice.clip = this.gameObject.GetComponent<CameraUI>().navodchik;
                     this.gameObject.GetComponent<CameraUI>().voice.Play();
+                    timer = 2;
                     navodchik = true;
                 }
                 WayPoint = GameObject.FindGameObjectWithTag("WayPoint3");
                 WayPointPos = WayPoint.transform.position;
                 MainCamera.transform.position = Vector3.Lerp(CamPosition, WayPointPos, progress);
+               
+                if (timer == 0)
+                    this.GetComponent<CameraUI>().butt = -4;
                 if (progress < 1.1f)
                     progress += step;
 
@@ -234,10 +240,16 @@ public class Control : MonoBehaviour
         if (timer < 0)
             timer = 0;
 
+
+        timer -= Time.fixedDeltaTime;
+        if (timer < 0)
+            timer = 0;
+        if (this.GetComponent<CameraUI>().butt == -4)
+            ThirdCamera.enabled = true;
     }
    void Update()
     {
-       
+        
 
     }
 }

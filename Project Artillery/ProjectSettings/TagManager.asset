@@ -13,6 +13,8 @@ TagManager:
   - WayPoint2
   - Kostil
   - WayPoint3
+  - Matrix
+  - Mirror
   layers:
   - Default
   - TransparentFX
@@ -22,10 +24,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - MirrorRotate
+  - Mirror
+  - Steklo
+  - Martix
   - 
   - 
   - 

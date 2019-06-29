@@ -4,17 +4,21 @@ using UnityEngine.UI;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class CameraUI : MonoBehaviour
 {
+    public RawImage rawImage;
+    public VideoPlayer videoPlayer;
     public AudioSource voice;
     public AudioClip uglomer, collimator, navodchik;
     public Button Strt, Ok, Rand, Exit, ok2, cancel, Accept, Back;
-    public Text time, znach, znachV;
+    public Text time, znach, znachV, warn2;
     public InputField des, sot;
     public RawImage error, good;
     public Sprite errorOff, errorAct, goodOff, goodAct;
-    private float timeout = 0, timer = 0;
+    public Texture2D mainTex, background;
+   public float timeout = 0, timer = 0;
     private string x1s = "00", x2s = "00";
     private bool play = false, ready = false;
     private int x1t, x2t;
@@ -23,10 +27,16 @@ public class CameraUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+       
+        warn2.enabled = false;
         voice = this.GetComponent<AudioSource>();
-        Time.timeScale = 0;
+       // Time.timeScale = 1;
         timer = 0;
-        butt = 0;
+        butt = 10;
+        if(butt==10)
+        videoPlayer.Play();
+        videoPlayer.SetDirectAudioVolume(0, 0.3f);
+        Strt.gameObject.SetActive(false);
         Strt.onClick.AddListener(StrtButton);
         Ok.onClick.AddListener(OkButton);
         Rand.onClick.AddListener(RandButton);
@@ -46,16 +56,35 @@ public class CameraUI : MonoBehaviour
         znachV.gameObject.SetActive(false);
         Accept.gameObject.SetActive(false);
         Back.gameObject.SetActive(false);
-        error.gameObject.SetActive(false);
-        good.gameObject.SetActive(false);
+        Exit.gameObject.SetActive(false);
+        // scope.gameObject.SetActive(false);
+        timeout = (float)videoPlayer.length;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (butt == -4)
+            Exit.gameObject.SetActive(false);
+        if (butt == 10)
+        {
+            
+            rawImage.texture = videoPlayer.texture;
 
+            if (timeout == 0)
+            {
+                butt = 0;
+                videoPlayer.Stop();
+                Destroy(rawImage);
+                Time.timeScale = 0;
+                    Strt.gameObject.SetActive(true);
+                Exit.gameObject.SetActive(true);
+            }
+
+
+        }
         time.text = timer.ToString("F2");
-        if (Time.timeScale == 1)
+        if (Time.timeScale == 1 & butt < 0)
             timer += Time.fixedDeltaTime;
         if (timeout > 0)
             timeout -= Time.fixedDeltaTime;
@@ -112,7 +141,13 @@ public class CameraUI : MonoBehaviour
                 des.text = x1s;
 
             }
+        if (butt == -4)
+        {
 
+            error.gameObject.SetActive(false);
+            good.gameObject.SetActive(false);
+
+        }
 
     }
 
@@ -122,32 +157,38 @@ public class CameraUI : MonoBehaviour
     {
         voice.clip = uglomer;
         voice.Play();
-        timeout = voice.clip.length + 2;
+        timeout = voice.clip.length + 1;
         play = true;
         Strt.gameObject.SetActive(false);
-        error.gameObject.SetActive(true);
-        good.gameObject.SetActive(true);
+        Time.timeScale = 1;
     }
 
     void OkButton()
     {
         if (x1s != "" & x2s != "")
         {
+            if (int.Parse(x1s) >= 43 & int.Parse(x1s) <= 55)
+            {
+                warn2.enabled = true;
+            }
+            else
+            {
+                x = int.Parse(x1s);
+                y = int.Parse(x2s);
+                ready = false;
+                butt = -1;
+                timeout = 2;
+                play = true;
+                temp.SetActive(false);
+                Time.timeScale = 1;
+                if (int.Parse(x1s) < 10 & int.Parse(x1s) > 0)
+                    x1s = "0" + x1s;
+                if (int.Parse(x2s) < 10)
+                    x2s = "0" + x2s;
+                error.gameObject.SetActive(true);
+                good.gameObject.SetActive(true);
+            }
 
-            x = int.Parse(x1s);
-            y = int.Parse(x2s);
-            ready = false;
-            butt = -1;
-            timeout = 2;
-            play = true;
-            temp.SetActive(false);
-            Time.timeScale = 1;
-            if (int.Parse(x1s) < 10 & int.Parse(x1s) > 0)
-                x1s = "0" + x1s;
-            if (int.Parse(x2s) < 10)
-                x2s = "0" + x2s;
-           
-           
         }
         
     }
@@ -155,10 +196,15 @@ public class CameraUI : MonoBehaviour
     {
         x1t = Random.Range(0, 59);
         x2t = Random.Range(0, 99);
+        if (x1t >= 43 & x1t <= 55)
+        {
+            RandButton();
+        }
         x1s = x1t.ToString();
         x2s = x2t.ToString();
         des.text = x1s;
         sot.text = x2s;
+        
     }
 
     void ExitButton()
@@ -191,6 +237,19 @@ public class CameraUI : MonoBehaviour
             butt = -1;
         else if (butt == -3)
             butt = -2;
-        
+       
+    }
+    void OnGUI()
+    {
+        if (butt == -4 || butt == -5)
+        {
+          
+            GUI.depth = 999;
+            int hor = Screen.width;
+            int ver = Screen.height;
+            GUI.DrawTexture(new Rect((hor - ver) / 2, 0, ver, ver), mainTex);
+            GUI.DrawTexture(new Rect((hor / 2) + (ver / 2), 0, hor / 2, ver), background);
+            GUI.DrawTexture(new Rect(0, 0, (hor / 2) - (ver / 2), ver), background);
+        }
     }
 }

@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Control : MonoBehaviour
 {
-    public Camera MainCamera, SecondCamera;
+    public AudioSource sounds;
+    public Camera MainCamera, SecondCamera, ThirdCamera;
     private GameObject krutilka, vizir, WayPoint;
     string ObjectName;
     public Vector3 CamPosition, WayPointPos;
+    public AudioClip errorS, goodS, strikeS;
     Ray ray ;
-    RaycastHit hit;
+    RaycastHit hit,targ;
     public float sensitivity, progress;
     private float step, stepKr, stepVz, timer;
     public int fx, fy,error;
-    private bool good, navodchik = false;
+    private bool dovod, strike, good, navodchik = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,12 +36,16 @@ public class Control : MonoBehaviour
         stepVz = 6f;
         error = 0;
         timer = 0;
+        ThirdCamera.enabled = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-  
+
+
+
+
         if (fx == 100)
         {
             fx = 0;
@@ -62,7 +68,7 @@ public class Control : MonoBehaviour
                     {
                         if (krutilka.name == ObjectName & Input.GetMouseButton(0) & Time.timeScale != 0 & this.GetComponent<CameraUI>().butt == -2)
                         {
-                        if (Input.GetAxis("Mouse Y") < -0.01)
+                        if (Input.GetAxis("Mouse Y") < -0.7f)
                         {
 
 
@@ -71,7 +77,7 @@ public class Control : MonoBehaviour
                             fx += 1;
                         
                         }
-                       else if (Input.GetAxis("Mouse Y") > 0.01)
+                       else if (Input.GetAxis("Mouse Y") > 0.7f)
                         {
                             krutilka.transform.Rotate(-stepKr, 0f, 0f);
                             vizir.transform.Rotate(0, 0.01f * stepVz, 0);
@@ -84,7 +90,7 @@ public class Control : MonoBehaviour
                         if (vizir.name == ObjectName & Input.GetMouseButton(0) & Time.timeScale != 0 & this.GetComponent<CameraUI>().butt == -1)
                         {
 
-                        if (Input.GetAxis("Mouse X") < -0.01)
+                        if (Input.GetAxis("Mouse X") < -0.7f)
                         {
 
 
@@ -92,12 +98,12 @@ public class Control : MonoBehaviour
                             fy -= 1;
 
                         }
-                        else if (Input.GetAxis("Mouse X") > 0.01)
+                        else if (Input.GetAxis("Mouse X") > 0.7f)
                         {
    
                             vizir.transform.Rotate(0, -stepVz, 0);
                             fy += 1;
-
+                        
                         }
 
                     }
@@ -145,79 +151,55 @@ public class Control : MonoBehaviour
             if (fy != this.gameObject.GetComponent<CameraUI>().x || fx != this.gameObject.GetComponent<CameraUI>().y)
             {
                 error += 1;
-                if(error != 3)
-                this.GetComponent<CameraUI>().butt = -1;
+                if (error < 3)
+                {
+                    this.GetComponent<CameraUI>().voice.clip = errorS;
+                    this.GetComponent<CameraUI>().voice.Stop();
+                    this.GetComponent<CameraUI>().voice.Play();
+                }
+                timer = 1.5f;
+
+
+                if (error != 3)
+                {
+                    this.GetComponent<CameraUI>().butt = -1;
+                    strike = true;
+                }
                 this.gameObject.GetComponent<CameraUI>().error.texture = this.gameObject.GetComponent<CameraUI>().errorAct.texture;
-                timer = 1f;
-                if (error == 3)
-                    good = true;
+                timer = 1.5f;
+
             }
             else if (fy == this.gameObject.GetComponent<CameraUI>().x & fx == this.gameObject.GetComponent<CameraUI>().y & good == false)
             {
                 good = true;
                 this.gameObject.GetComponent<CameraUI>().good.texture = this.gameObject.GetComponent<CameraUI>().goodAct.texture;
                 timer = 1f;
+                this.GetComponent<CameraUI>().voice.clip = goodS;
+                this.GetComponent<CameraUI>().voice.Stop();
+                this.GetComponent<CameraUI>().voice.Play();
             }
             if (error == 3)
             {
                
                 if (navodchik == false)
                 {
-                    this.gameObject.GetComponent<CameraUI>().voice.Stop();
-                    this.gameObject.GetComponent<CameraUI>().voice.clip = this.gameObject.GetComponent<CameraUI>().navodchik;
-                    this.gameObject.GetComponent<CameraUI>().voice.Play();
+                    this.GetComponent<CameraUI>().voice.Stop();
+                    this.GetComponent<CameraUI>().voice.clip = this.gameObject.GetComponent<CameraUI>().navodchik;
+                    this.GetComponent<CameraUI>().voice.Play();
+                    timer = 4f;
                     navodchik = true;
                 }
                 WayPoint = GameObject.FindGameObjectWithTag("WayPoint3");
                 WayPointPos = WayPoint.transform.position;
                 MainCamera.transform.position = Vector3.Lerp(CamPosition, WayPointPos, progress);
+               
+
                 if (progress < 1.1f)
                     progress += step;
+                dovod = true;
 
 
-
-                if (this.gameObject.GetComponent<CameraUI>().x > fy)
-                {
-                    while (fy != this.gameObject.GetComponent<CameraUI>().x)
-                    {
-                            fy += 1;
-                            vizir.transform.Rotate(0, -stepVz, 0);
-                    }
-                  
-                }
-                else if ((this.gameObject.GetComponent<CameraUI>().x < fy)) { 
-                    while (fy != this.gameObject.GetComponent<CameraUI>().x)
-                    {
-                 
-                            fy -= 1;
-                            vizir.transform.Rotate(0, stepVz, 0);
-                            
-                        
-
-                    }
-                    }
-                if (this.gameObject.GetComponent<CameraUI>().y > fx)
-                    while (fx != this.gameObject.GetComponent<CameraUI>().y)
-                    {
-                     
-                            fx += 1;
-                        krutilka.transform.Rotate(stepKr, 0f, 0f);
-                        vizir.transform.Rotate(0, 0.01f * -stepVz, 0);
-       
-                        
-
-
-                    }
-                else if ((this.gameObject.GetComponent<CameraUI>().y < fx))
-                    while (fx != this.gameObject.GetComponent<CameraUI>().y)
-                    {
-                  
-                            fx -= 1;
-                        krutilka.transform.Rotate(-stepKr, 0f, 0f);
-                        vizir.transform.Rotate(0, 0.01f * stepVz, 0);
-                       
-                       
-                    }
+               
 
 
 
@@ -225,19 +207,85 @@ public class Control : MonoBehaviour
             }
            // Debug.Log("Выставленые значения:" + fy + "," + fx);
         }
+        
         if (timer == 0)
         {
+
             this.gameObject.GetComponent<CameraUI>().error.texture = this.gameObject.GetComponent<CameraUI>().errorOff.texture;
             this.gameObject.GetComponent<CameraUI>().good.texture = this.gameObject.GetComponent<CameraUI>().goodOff.texture;
+            if (strike)
+            {
+                GetComponent<CameraShake>().Shake(0.3f, 0.3f);
+                strike = !strike;
+                sounds.clip = strikeS;
+                sounds.Stop();
+                sounds.Play();
+            }
+            if (dovod == false & good == true & (this.GetComponent<CameraUI>().butt == -3 | this.GetComponent<CameraUI>().butt == -1))
+                this.GetComponent<CameraUI>().butt = -4;
+        }
+
+        if(dovod)
+        {
+            if ((fy == this.gameObject.GetComponent<CameraUI>().x & fx == this.gameObject.GetComponent<CameraUI>().y & good == false & dovod == true))
+            {
+                dovod = false;
+                good = true;
+                timer = 1f;
+                
+            }
+            if (this.gameObject.GetComponent<CameraUI>().x > fy)
+                if (fy != this.gameObject.GetComponent<CameraUI>().x)
+                {
+                    fy += 1;
+                    vizir.transform.Rotate(0, -stepVz, 0);
+                }
+
+            
+            else if ((this.gameObject.GetComponent<CameraUI>().x < fy))
+                if (fy != this.gameObject.GetComponent<CameraUI>().x)
+                {
+
+                    fy -= 1;
+                    vizir.transform.Rotate(0, stepVz, 0);
+
+
+
+                }
+            if (this.gameObject.GetComponent<CameraUI>().y > fx)
+                if (fx != this.gameObject.GetComponent<CameraUI>().y)
+                {
+
+                    fx += 1;
+                    krutilka.transform.Rotate(stepKr, 0f, 0f);
+                    vizir.transform.Rotate(0, 0.01f * -stepVz, 0);
+
+
+
+
+                }
+                else if ((this.gameObject.GetComponent<CameraUI>().y < fx))
+                    if (fx != this.gameObject.GetComponent<CameraUI>().y)
+                    {
+
+                        fx -= 1;
+                        krutilka.transform.Rotate(-stepKr, 0f, 0f);
+                        vizir.transform.Rotate(0, 0.01f * stepVz, 0);
+
+
+                    }
+            
         }
         timer -= Time.fixedDeltaTime;
         if (timer < 0)
             timer = 0;
 
+
     }
+
    void Update()
     {
-       
+
 
     }
 }

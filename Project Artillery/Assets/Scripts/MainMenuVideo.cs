@@ -15,13 +15,7 @@ public class MainMenuVideo : MonoBehaviour
         videoPlayer.Play();
     }
   
-    // IEnumerator PlayVideo()
-   // {
-       
 
-
-    //}
-    // Update is called once per frame
     void Update()
     {
         rawImage.texture = videoPlayer.texture;

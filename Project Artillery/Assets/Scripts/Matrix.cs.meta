@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f0b4105345c08a54a8545ee11c0d89b0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - MatrixTexture: {fileID: 2100000, guid: b542446c8bd66364fa0487836eb398d3, type: 2}
+  - Button3: {instanceID: 0}
+  - Good: {instanceID: 0}
+  - Error: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -15,6 +15,7 @@ TagManager:
   - WayPoint3
   - Matrix
   - Mirror
+  - trenoga
   layers:
   - Default
   - TransparentFX
@@ -28,9 +29,9 @@ TagManager:
   - Mirror
   - Steklo
   - Martix
-  - 
-  - 
-  - 
+  - Lidl
+  - cam
+  - krutilka
   - 
   - 
   - 

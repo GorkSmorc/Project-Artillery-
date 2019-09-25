@@ -8,35 +8,44 @@ using UnityEngine.Video;
 
 public class CameraUI : MonoBehaviour
 {
-    public RawImage rawImage;
-    public VideoPlayer videoPlayer;
+    public Camera Four, Five;
     public AudioSource voice;
     public AudioClip uglomer, collimator, navodchik;
     public Button Strt, Ok, Rand, Exit, ok2, cancel, Accept, Back;
-    public Text time, znach, znachV, warn2;
+    public Text time, znach, znachV, warn2, Score, endTimer, timerL;
     public InputField des, sot;
+    public RawImage endTable;
     public RawImage error, good;
     public Sprite errorOff, errorAct, goodOff, goodAct;
     public Texture2D mainTex, background;
-   public float timeout = 0, timer = 0;
+   public float timeout = 0, timer = 0, timerM = 0;
     private string x1s = "00", x2s = "00";
-    private bool play = false, ready = false;
+    private bool play = false;
     private int x1t, x2t;
-    public int butt, x, y;
+    public static int butt;
+        public int x, y;
     private GameObject temp,ex;
+    public GameObject JoyStick;
+    public GameObject[] trenoga;
+    private void Awake()
+    {
+        butt = 10;
+    }
     // Start is called before the first frame update
     void Start()
     {
-       
+        Four.enabled = false;
+        Five.enabled = false;
+        endTable.enabled = false;
+        //JoyStick.SetActive(false);
+        trenoga = GameObject.FindGameObjectsWithTag("trenoga");
+        for (int i = 0; i < trenoga.Length; i++)
+            trenoga[i].GetComponent<MeshRenderer>().enabled = false;
+        voice.volume = MainMenu.Vol;
         warn2.enabled = false;
         voice = this.GetComponent<AudioSource>();
-       // Time.timeScale = 1;
         timer = 0;
-        butt = 10;
-        if(butt==10)
-        videoPlayer.Play();
-        videoPlayer.SetDirectAudioVolume(0, 0.3f);
-        Strt.gameObject.SetActive(false);
+        //Strt.gameObject.SetActive(false);
         Strt.onClick.AddListener(StrtButton);
         Ok.onClick.AddListener(OkButton);
         Rand.onClick.AddListener(RandButton);
@@ -50,87 +59,113 @@ public class CameraUI : MonoBehaviour
         ex = GameObject.FindGameObjectWithTag("ex") as GameObject;
         temp.SetActive(false);
         ex.SetActive(false);
-        des.text = "";
-        sot.text = "";
+        des.text = "00";
+        sot.text = "00";
         znach.gameObject.SetActive(false);
         znachV.gameObject.SetActive(false);
         Accept.gameObject.SetActive(false);
         Back.gameObject.SetActive(false);
         Exit.gameObject.SetActive(false);
         // scope.gameObject.SetActive(false);
-        timeout = (float)videoPlayer.length;
+        Time.timeScale = 1;
+        JoyStick.SetActive(false);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (butt == -4)
-            Exit.gameObject.SetActive(false);
-        if (butt == 10)
+
+        if (timerM < 10)
         {
-            
-            rawImage.texture = videoPlayer.texture;
-
-            if (timeout == 0)
-            {
-                butt = 0;
-                videoPlayer.Stop();
-                Destroy(rawImage);
-                Time.timeScale = 0;
-                    Strt.gameObject.SetActive(true);
-                Exit.gameObject.SetActive(true);
-            }
-
-
+            if (timer < 10)
+                time.text = "0" + timerM.ToString() + ":" + "0" + timer.ToString("F3");
+            else
+                time.text = "0" + timerM.ToString() + ":" + timer.ToString("F3");
         }
-        time.text = timer.ToString("F2");
+        else
+        {
+            if (timer < 10)
+                time.text = timerM.ToString() + ":" + "0" + timer.ToString("F3");
+            else
+                time.text = timerM.ToString() + ":" + timer.ToString("F3");
+        }
         if (Time.timeScale == 1 & butt < 0)
+        {
             timer += Time.fixedDeltaTime;
-        if (timeout > 0)
-            timeout -= Time.fixedDeltaTime;
-        if (timeout < 0)
-            timeout = 0;
-
-        if (butt == 0)
-        {
-
-            if (timeout == 0 & play == true)
-            {
-                Time.timeScale = 1;
-                ready = true;
-                butt = 1;
-                play = false;
-                voice.Stop();
-            }
+            if (timer >= 60) {
+                timerM += 1;
+                timer = 0;
+                    }
         }
-        if (ready)
+        if (timeout != 0)
         {
-            temp.SetActive(true);
-            if (des.text != "")
-                x1s = des.text;
-            if (sot.text != "")
-                x2s = sot.text;
-            Time.timeScale = 0;
+            if (timeout > 0)
+                timeout -= Time.fixedDeltaTime;
+            if (timeout < 0)
+                timeout = 0;
         }
-        if (butt == -1)
+        switch(butt)
         {
-            znach.gameObject.SetActive(true);
-            znachV.gameObject.SetActive(true);
-            znachV.text = x1s + "." + x2s;
-            if (timeout == 0 & play == true)
-            {
-                voice.clip = collimator;
-                voice.Play();
-                timeout = voice.clip.length;
-                play = false;
-            }
-           // if (timeout == 0 & play == false)
-                //voice.Stop();
+            case 0:
+            
+                if (timeout == 0 & play == true)
+                {
+                    //Time.timeScale = 1;
+                    //ready = true;
+                    butt = 1;
+                    play = false;
+                    voice.Stop();
+                    temp.SetActive(true);
+                    Time.timeScale = 1;
 
-            Accept.gameObject.SetActive(true);
-            Back.gameObject.SetActive(true);
+
+                }
+                
+                break;
+
+            case -1:
+
+                znach.gameObject.SetActive(true);
+                znachV.gameObject.SetActive(true);
+                znachV.text = x1s + "." + x2s;
+                Accept.gameObject.SetActive(true);
+                Back.gameObject.SetActive(true);
+                if (timeout == 0 & play == true)
+                {
+                    voice.clip = collimator;
+                    voice.Play();
+                    timeout = voice.clip.length;
+                    play = false;
+                    
+                }
+                    break;
+            case -4:
+                
+                Exit.gameObject.SetActive(false);
+                error.gameObject.SetActive(false);
+                good.gameObject.SetActive(false);
+                
+               break;
+            case -7:
+                JoyStick.SetActive(true);
+                Exit.gameObject.SetActive(true);
+                error.gameObject.SetActive(true);
+                good.gameObject.SetActive(true);
+                break;
+            case -5:
+                JoyStick.SetActive(false);
+                Exit.gameObject.SetActive(false);
+                error.gameObject.SetActive(false);
+                good.gameObject.SetActive(false);
+                break;
+            case -6:
+                JoyStick.SetActive(false);
+                error.gameObject.SetActive(false);
+                good.gameObject.SetActive(false);
+                Exit.gameObject.SetActive(true);
+                EndTable();
+                break;
         }
-
         if (x1s != "")
 
             if (int.Parse(x1s) >= 60)
@@ -141,13 +176,7 @@ public class CameraUI : MonoBehaviour
                 des.text = x1s;
 
             }
-        if (butt == -4)
-        {
-
-            error.gameObject.SetActive(false);
-            good.gameObject.SetActive(false);
-
-        }
+        
 
     }
 
@@ -165,6 +194,16 @@ public class CameraUI : MonoBehaviour
 
     void OkButton()
     {
+        if (des.text != "00")
+        {
+            x1s = des.text;
+
+        }
+        if (sot.text != "00")
+        {
+            x2s = sot.text;
+
+        }
         if (x1s != "" & x2s != "")
         {
             if (int.Parse(x1s) >= 43 & int.Parse(x1s) <= 55)
@@ -173,9 +212,11 @@ public class CameraUI : MonoBehaviour
             }
             else
             {
+                
                 x = int.Parse(x1s);
                 y = int.Parse(x2s);
-                ready = false;
+
+               // ready = false;
                 butt = -1;
                 timeout = 2;
                 play = true;
@@ -183,7 +224,7 @@ public class CameraUI : MonoBehaviour
                 Time.timeScale = 1;
                 if (int.Parse(x1s) < 10 & int.Parse(x1s) > 0)
                     x1s = "0" + x1s;
-                if (int.Parse(x2s) < 10)
+                if (int.Parse(x2s) < 10 & int.Parse(x2s) > 0)
                     x2s = "0" + x2s;
                 error.gameObject.SetActive(true);
                 good.gameObject.SetActive(true);
@@ -213,6 +254,8 @@ public class CameraUI : MonoBehaviour
         }
     void Ok2Button()
     {
+        CameraUI.butt = 10;
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
     void CancelButton()
@@ -223,21 +266,60 @@ public class CameraUI : MonoBehaviour
     {
         this.GetComponent<Control>().progress = 0;
         this.GetComponent<Control>().CamPosition = this.GetComponent<Control>().MainCamera.transform.position;
-        if (butt == -1)
-            butt = -2;
-        else if (butt == -2)
-            butt = -3;
-            
+        switch (butt)
+        {
+            case -1:
+                butt = -2;
+                break;
+            case -2:
+                butt = -3;
+                break;
+        }
     }
     void BackButton()
     {
         this.GetComponent<Control>().progress = 0;
         this.GetComponent<Control>().CamPosition = this.GetComponent<Control>().MainCamera.transform.position;
-        if (butt == -2)
+        switch (butt)
+        {
+            case -2:
             butt = -1;
-        else if (butt == -3)
+                break;
+            case -3:
             butt = -2;
-       
+                break;
+            case -7:
+                JoyStick.SetActive(false);
+                butt = -4;
+                break;
+        }
+    }
+    void EndTable()
+    {
+
+        timerL.enabled = false;
+        time.enabled = false;
+        znach.enabled = false;
+        znachV.enabled = false;
+        Back.gameObject.SetActive(false);
+        Accept.gameObject.SetActive(false);
+        Exit.gameObject.SetActive(true);
+        endTable.enabled = true;
+        endTimer.text = time.text;
+        if (!Control.neud)
+        {
+            if (timerM == 0 & timer <= 45)
+                Score.text = "ОТЛ";
+            else if (timerM == 0 & timer > 45 & timer <= 55)
+                Score.text = "ХОР";
+            else if ((timerM == 0 & timer > 55) | (timerM == 1 & timer <= 10))
+                Score.text = "УДОВ";
+            else
+                Score.text = "НЕУД";
+        }
+        else
+            Score.text = "НЕУД";
+        Time.timeScale = 0;
     }
     void OnGUI()
     {

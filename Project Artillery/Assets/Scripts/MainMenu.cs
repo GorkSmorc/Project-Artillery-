@@ -7,12 +7,17 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
+    public static float Vol = 0.3f;
     public Button Play, SettingsB, Quit, Back;
     public Slider Volume;
     public AudioSource MainSound;
    
     public int menupoint;
     // Start is called before the first frame update
+    void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
     void Start()
     {
         menupoint = 0;
@@ -45,6 +50,7 @@ public class MainMenu : MonoBehaviour
         GameObject.FindGameObjectWithTag("MainMenu").SetActive(false);
         SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
         menupoint = 1;
+        
 
 
     }
@@ -72,6 +78,7 @@ public class MainMenu : MonoBehaviour
     void VolumeSlider(float arg)
     {
         MainSound.volume = arg;
+        Vol = arg;
     }
 
 

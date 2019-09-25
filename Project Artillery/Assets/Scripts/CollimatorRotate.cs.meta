@@ -3,7 +3,16 @@ guid: 355e88623e9659748932ca166e7cdf25
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - MCamera: {instanceID: 0}
+  - FourCam: {instanceID: 0}
+  - FiveCam: {instanceID: 0}
+  - trenoga: {instanceID: 0}
+  - martixrotate: {instanceID: 0}
+  - matrix: {fileID: 2100000, guid: b542446c8bd66364fa0487836eb398d3, type: 2}
+  - Button1: {instanceID: 0}
+  - Button2: {instanceID: 0}
+  - Button3: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
